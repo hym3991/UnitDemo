@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.neo.unitdemo"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -17,12 +17,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
 
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -38,5 +44,29 @@ dependencies {
 
     //android
     testImplementation 'org.robolectric:robolectric:4.3.1'
-    testImplementation 'org.robolectric:shadows-support-v4:3.4-rc2'
+
+    /**
+     *  可以设置http response的header、body、status code等。
+     *  可以记录接收到的请求，获取请求的body、header、method、path、HTTP version。
+     *  可以模拟网速慢的网络环境。
+     *  提供Dispatcher，让mockWebServer可以根据不同的请求进行不同的反馈。
+     */
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.2.2'
+
+    //网络请求三件套
+    //RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
+    //RxAndroid
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //okhttp
+    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
+    //Retrofit
+    implementation('com.squareup.retrofit2:retrofit:2.6.2'){
+        exclude module: 'okhttp'
+    }
+    implementation('com.squareup.retrofit2:adapter-rxjava2:2.6.2'){
+        exclude module: 'rxjava'
+    }
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'
 }
